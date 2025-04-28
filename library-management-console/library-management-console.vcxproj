@@ -135,6 +135,12 @@
   <ItemGroup>
     <ClCompile Include="library-management-console.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Book.h" />
+    <ClInclude Include="Reservation.h" />
+    <ClInclude Include="Transaction.h" />
+    <ClInclude Include="User.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
