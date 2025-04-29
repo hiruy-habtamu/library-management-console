@@ -58,7 +58,9 @@ Open the `library-management-console.sln` file with Visual Studio.
 
 #### Copy DLL Files:
 
-Copy the `mysqlcppconnx-2-vs14.dll` file to the project directory where the `.exe` is found which is in `x64/Release` or `x64/Debug` folder. If it does not exist create the folder.
+Copy the `mysqlcppconnx-2-vs14.dll` file to the project directory where the `.exe` is found which is in `x64/Release` folder. It is only created after running the project once.
+
+### `MAKE SURE YOUR CODE IS RUNNING ON RELSEASE NOT DEBUG` 
 
 ### 5. Build and Run the Project
 
@@ -120,7 +122,7 @@ int main() {
   - Ensure the `mysqlcppconnx.lib` file is correctly linked in the project settings under **Linker > Input > Additional Dependencies**.
 
 - **Error: "Cannot open mysqlcppconnx-2-vs14.dll"**:
-  - Make sure the `mysqlcppconnx-2-vs14.dll` file is either in the project directory or in a directory that's included in your system's PATH environment variable.
+  - Make sure the `mysqlcppconnx-2-vs14.dll` file is in `x64\Release` directory.
 
 - **Unable to connect to MySQL server**:
   - Verify that the MySQL server is running on the correct host and port.
