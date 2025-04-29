@@ -42,6 +42,14 @@ Open the `library-management-console.sln` file with Visual Studio.
 2. Under **Configuration Properties**, go to **VC++ Directories**.
    - **Include Directories**: Overwrite  the path to MySQL Connector/C++ headers: `$(WindowsSDK_IncludePath);$(IncludePath);C:\Program Files\MySQL\MySQL Connector C++ 9.3\include;$(VC_IncludePath);`
    - **Library Directories**: Overwrite the path to the `lib` folder: `$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);C:\Program Files\MySQL\MySQL Connector C++ 9.3\lib64\vs14`
+  
+#### Add Additional Include Directories:
+1. Under **Configuration Properties**, go to **C/C++ -> General -> Additional Include Directories**.
+2. Overwrite to `C:\Program Files\MySQL\MySQL Connector C++ 9.3\include\mysqlx`
+
+### Configure Preprocessors
+1. Under **Configuration Properties**, go to **C/C++ -> General -> Preprocessor Definiitons**.
+2. Overwrite to `_CRT_SECURE_NO_WARNINGS;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)`
 
 #### Link the Required Libraries:
 
@@ -50,8 +58,7 @@ Open the `library-management-console.sln` file with Visual Studio.
 
 #### Copy DLL Files:
 
-Copy the `mysqlcppconnx-2-vs14.dll` file to the project directory where the `.exe` is found which is in `x64/` folder.
-
+Copy the `mysqlcppconnx-2-vs14.dll` file to the project directory where the `.exe` is found which is in `x64/Release` or `x64/Debug` folder. If it does not exist create the folder.
 
 ### 5. Build and Run the Project
 
