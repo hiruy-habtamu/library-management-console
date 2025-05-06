@@ -73,7 +73,7 @@ User signup() {
     cout << endl;
     // Get unique email
     while (true) {
-        cout << "Enter Email ID: ";
+        cout << "Enter email address : ";
         cin >> email;
 
         rr = userTable.select("UserID").where("Email = :email ").bind("email", email).execute();
@@ -108,7 +108,35 @@ User signup() {
     
     cout << "Enter Password: ";
     
+    while(true){
     cin >> password;
+
+    if (password.length() < 8) {
+        cout << "Password must be at least 8 characters long" << endl;
+        continue;
+    }
+    else {
+        bool has_special=false;
+        bool has_digit = false;
+        for (char a : password) {
+            if (ispunct(a)) {
+                has_special = true;
+            }
+			if (isdigit(a)) {
+				has_digit = true;
+            }
+        }
+        if (!has_special) {
+            cout << "Password must contain at least one special character" << endl;
+            continue;
+        }
+        if (!has_digit) {
+            cout << "Password must contain at least one digit" << endl;
+            continue;
+        }
+     break;
+        }
+    }
 
     // Get unique University ID
     while (true) {
