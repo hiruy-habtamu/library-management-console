@@ -128,7 +128,7 @@ CREATE TABLE `user` (
   `UniversityID` varchar(50) NOT NULL,
   PRIMARY KEY (`UserID`),
   UNIQUE KEY `Email` (`Email`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -137,7 +137,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'Alice','Johnson','alice@example.com','Student','password123','Active','U12345'),(2,'Bob','Smith','bob@example.com','Faculty','password456','Active','U67890'),(3,'Charlie','Brown','charlie@example.com','Librarian','password789','Active','U11223'),(4,'David','White','david@example.com','Student','password101','Inactive','U44556');
+INSERT INTO `user` VALUES (1,'Alice','Johnson','alice@example.com','Student','345616f307c62eaf232f2d5e25c430958023c91436d2ef2caebb5b866b07ecd1','Active','U12345'),(2,'Bob','Smith','bob@example.com','Faculty','345616f307c62eaf232f2d5e25c430958023c91436d2ef2caebb5b866b07ecd1','Active','U67890'),(3,'Charlie','Brown','charlie@example.com','Librarian','345616f307c62eaf232f2d5e25c430958023c91436d2ef2caebb5b866b07ecd1','Active','U11223'),(4,'David','White','david@example.com','Student','345616f307c62eaf232f2d5e25c430958023c91436d2ef2caebb5b866b07ecd1','Inactive','U44556'),(5,'Abebe','Beso','abebe@abebe.edu.et','Student','345616f307c62eaf232f2d5e25c430958023c91436d2ef2caebb5b866b07ecd1','Active','ETS0909');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -150,4 +150,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-29 21:33:08
+-- Dump completed on 2025-05-07 12:04:22

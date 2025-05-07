@@ -137,6 +137,10 @@ User signup() {
      break;
         }
     }
+    
+    // Hash password using picosha2 header
+
+    string hashed_password = picosha2::hash256_hex_string(password);
 
     // Get unique University ID
     while (true) {
@@ -157,11 +161,11 @@ User signup() {
     try
     {
         userTable.insert("UserID", "FirstName", "LastName", "Email", "Role", "Password", "Status", "UniversityID")
-                 .values(new_user_id, first_name, last_name, email, role, password, status, universityID).execute();
+                 .values(new_user_id, first_name, last_name, email, role, hashed_password, status, universityID).execute();
 
         cout << "User registered successfully!" << endl;
 
-        User newUser = {new_user_id,first_name,last_name,email,role,password,status,universityID };
+        User newUser = {new_user_id,first_name,last_name,email,role,hashed_password,status,universityID };
 
         return newUser;
     }
@@ -180,7 +184,7 @@ User login() {
 
     User user;
 
-    string email, password;
+    string email, plain_password,password;
     int tries = 4;
     
     cout << "Enter email: ";
@@ -189,7 +193,9 @@ User login() {
     while(tries > 0){
         
         cout << "Enter Password: ";
-        cin >> password;
+        cin >> plain_password;
+
+        password = picosha2::hash256_hex_string(plain_password);
         
         mysqlx::RowResult rr = userTable.select("Password").where("Email = :email").bind("email",email).execute();
         mysqlx::Row row = rr.fetchOne();
@@ -259,7 +265,6 @@ User login() {
             cout << "Email not found!" << endl;
             user.clear();
             return user;
-            break;
         }
         
     }

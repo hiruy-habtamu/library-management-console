@@ -133,6 +133,11 @@ int main() {
 - The X DevAPI works with MySQL 8.0 and above. Ensure that your MySQL server is configured for X Protocol and is running on port 33060 by default.
 - MySQL Connector/C++ 8.0 or later is required for using the X DevAPI. Make sure you're using the correct version.
 
+## Third-Party Libraries
+
+- [picosha2](https://github.com/okdshin/PicoSHA2): SHA-256 header-only library (in `third_party/picosha2.h`)
+
+
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
