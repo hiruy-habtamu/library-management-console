@@ -73,7 +73,7 @@ User signup() {
     cout << endl;
     // Get unique email
     while (true) {
-        cout << "Enter Email ID: ";
+        cout << "Enter email address : ";
         cin >> email;
 
         rr = userTable.select("UserID").where("Email = :email ").bind("email", email).execute();
@@ -108,7 +108,39 @@ User signup() {
     
     cout << "Enter Password: ";
     
+    while(true){
     cin >> password;
+
+    if (password.length() < 8) {
+        cout << "Password must be at least 8 characters long" << endl;
+        continue;
+    }
+    else {
+        bool has_special=false;
+        bool has_digit = false;
+        for (char a : password) {
+            if (ispunct(a)) {
+                has_special = true;
+            }
+			if (isdigit(a)) {
+				has_digit = true;
+            }
+        }
+        if (!has_special) {
+            cout << "Password must contain at least one special character" << endl;
+            continue;
+        }
+        if (!has_digit) {
+            cout << "Password must contain at least one digit" << endl;
+            continue;
+        }
+     break;
+        }
+    }
+    
+    // Hash password using picosha2 header
+
+    string hashed_password = picosha2::hash256_hex_string(password);
 
     // Get unique University ID
     while (true) {
@@ -129,11 +161,11 @@ User signup() {
     try
     {
         userTable.insert("UserID", "FirstName", "LastName", "Email", "Role", "Password", "Status", "UniversityID")
-                 .values(new_user_id, first_name, last_name, email, role, password, status, universityID).execute();
+                 .values(new_user_id, first_name, last_name, email, role, hashed_password, status, universityID).execute();
 
         cout << "User registered successfully!" << endl;
 
-        User newUser = {new_user_id,first_name,last_name,email,role,password,status,universityID };
+        User newUser = {new_user_id,first_name,last_name,email,role,hashed_password,status,universityID };
 
         return newUser;
     }
@@ -152,7 +184,7 @@ User login() {
 
     User user;
 
-    string email, password;
+    string email, plain_password,password;
     int tries = 4;
     
     cout << "Enter email: ";
@@ -161,7 +193,9 @@ User login() {
     while(tries > 0){
         
         cout << "Enter Password: ";
-        cin >> password;
+        cin >> plain_password;
+
+        password = picosha2::hash256_hex_string(plain_password);
         
         mysqlx::RowResult rr = userTable.select("Password").where("Email = :email").bind("email",email).execute();
         mysqlx::Row row = rr.fetchOne();
@@ -231,7 +265,6 @@ User login() {
             cout << "Email not found!" << endl;
             user.clear();
             return user;
-            break;
         }
         
     }

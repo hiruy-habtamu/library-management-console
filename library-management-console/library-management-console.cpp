@@ -6,9 +6,14 @@ using namespace std;
 mysqlx::Session sess("localhost", 33060, "root", "root", "library_db");
 mysqlx::Schema db = sess.getSchema("library_db");
 
+#include "picosha2.h"
+//picosha2 is a third-party single header library used for sha256 hash generation
+
 #include "User.h"        
+// Default password for all dummy users is abcd@1234
+
 #include "Book.h"        
-#include "Transaction.h" 
+#include "Transaction.h"
 #include "Reservation.h" 
 
 // Initiate current user
@@ -47,9 +52,9 @@ void displayUserMenu() {
 int main() {
     bool running = true;
     while (running) {
-        // both are used for deactivation purposes
+        // both bool running and deactivate_choice are used for deactivation purposes
         char deactivate_choice;
-        string password;
+        string plain_password,password;
 
         char choice;
         if (currentUser.is_empty()||currentUser.status == "Inactive") {
@@ -58,6 +63,7 @@ int main() {
             cout << "1. Sign Up **WORKS** " << endl;
             cout << "2. Login **WORKS** " << endl;
             cout << "3. Exit **WORKS** " << endl;
+            cout << "\nEnter choice:";
             cin >> choice;
             switch (choice) {
             case '1':
@@ -104,7 +110,9 @@ int main() {
                 break;
             case '7':
                 cout << "Enter password: " << endl;
-                cin >> password;
+                cin >> plain_password;
+                // Hash the plain password into a hashed password
+                password = picosha2::hash256_hex_string(plain_password);
                 if (password == currentUser.password) {
 
                     cout << "Are you sure you want to deactivate your account? Y/N " << endl;
