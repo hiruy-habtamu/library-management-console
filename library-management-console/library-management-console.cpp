@@ -150,10 +150,12 @@ int main() {
                 // View reserve
                 break;
             case '3':
-                // Add book
+                system("cls");
+                addBook();
                 break;
             case '4':
-                // Remove book
+                system("cls");
+                removeBook();
                 break;
             case '5':
                 // Logout
