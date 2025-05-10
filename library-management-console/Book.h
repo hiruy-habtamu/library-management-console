@@ -78,7 +78,7 @@ void addBook() {
         rr = bookTable.select("MAX(BookID)").execute();
 
         row = rr.fetchOne();
-        int new_book_id = (row && !row[0].isNull()) ? row[0].get<int>() + 1 : 1;
+        int new_book_id = (row && !row.isNull()) ? row[0].get<int>() + 1 : 1;
         int copy_id = 1;
 
         bookTable.insert("BookID", "CopyID", "Title", "Author", "ISBN", "PublicationYear", "Category", "Status")
@@ -98,29 +98,49 @@ void removeBook() {
     cout << "Enter Copy ID: ";
     cin >> copyID;
 
-    mysqlx::RowResult rr = bookTable.select("BookID")
-        .where("BookID = :bid AND CopyID = :cid")
-        .bind("bid", bookID)
-        .bind("cid", copyID)
-        .execute();
-
-    mysqlx::Row row = rr.fetchOne();
-
-    if (!row.isNull()) {
-        // Book exists, delete it
-        bookTable.remove()
+    try {
+        mysqlx::RowResult rr = bookTable.select("status")
             .where("BookID = :bid AND CopyID = :cid")
             .bind("bid", bookID)
             .bind("cid", copyID)
             .execute();
-        cout << "Book deleted successfully." << endl;
-    }
-    else {
-        cout << "Book not found." << endl;
+
+        mysqlx::Row row = rr.fetchOne();
+        if (row && !row.isNull()) {
+            string status = row[0].get<string>();
+            cout << "Current Status: " << status << endl; 
+
+            if (status != "removed") {
+                auto result = bookTable.update()
+                    .set("Status", "removed")
+                    .where("BookID = :bid AND CopyID = :cid")
+                    .bind("bid", bookID)
+                    .bind("cid", copyID)
+                    .execute();
+
+                cout << "Rows affected: " << result.getAffectedItemsCount() << endl; 
+                cout << "Book removed successfully." << endl;
+            } else {
+                cout << "Book is already removed." << endl;
+            }
+        } else {
+            cout << "Book not found." << endl;
+        }
+    } catch (const mysqlx::Error &err) {
+        cerr << "Error: " << err.what() << endl;
     }
 
 
 }
+
+
+
+
+
+
+
+
+
 
 
 
