@@ -21,6 +21,7 @@ User currentUser;
 
 // LIBRARIAN ONLY MENUU//
 void displayLibrarianMenu() {
+    currentUser.displayUserDetails();
     cout << "******************** Library Management System **********************" << endl;
     cout << "_____________________________ LIBRARIAN MENU ________________________" << endl;
     cout << "1. View Transactions" << endl;
@@ -36,6 +37,7 @@ void displayLibrarianMenu() {
 
 
 void displayUserMenu() {
+    currentUser.displayUserDetails();
     cout << "************************Library Management System *******************" << endl;
     cout << "_____________________________USER MENU_______________________________" << endl;
     cout << "1. Borrow Book" << endl; // Should Automatically ask to reserve book if there is no copy that exists.
@@ -83,7 +85,6 @@ int main() {
             }
         }
         else if (currentUser.role == "Student" || currentUser.role == "Faculty") {
-
             system("cls");
             displayUserMenu();
             cin >> choice;
