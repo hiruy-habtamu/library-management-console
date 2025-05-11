@@ -88,17 +88,58 @@ int main() {
             displayUserMenu();
             cin >> choice;
             switch (choice) {
-            case '1':
+            case '1': {
                 // BorrowBook stuff
+                system("cls");
+                int bookIDToBorrow;
+                cout << "--- Borrow Book ---" << endl;
+                cout << "Enter the Book ID you want to borrow: ";
+                cin >> bookIDToBorrow;
+
+                if (borrowBook(currentUser.userID, bookIDToBorrow)) {
+                    cout << "\nBorrow operation completed." << endl;
+                }
+                else {
+                    cout << "\nBorrow operation failed." << endl;
+                }
+
+                cout << "\nPress Enter to continue...";
+                cin.ignore();
+                cin.get();
                 break;
-            case '2':
+             }
+            case '2': {
                 // Return Book stuff
+                system("cls");
+                int transactionIDToReturn;
+                cout << "--- Return Book ---" << endl;
+                cout << "Enter the Transaction ID to return: ";
+                cin >> transactionIDToReturn;
+
+                if (returnBook(currentUser.userID, transactionIDToReturn)) {
+                    cout << "\nReturn operation completed." << endl;
+                }
+                else {
+                    cout << "\nReturn operation failed." << endl;
+                }
+
+                cout << "\nPress Enter to continue...";
+                cin.ignore();
+                cin.get();
+            }
                 break;
             case '3':
                 // Show available book
                 break;
             case '4':
                 //View Transaction
+                system("cls");
+                cout << "Viewing your transaction history..." << endl;
+                viewUserTransactions(currentUser.userID);
+                cout << "\nPress any key to continue...";
+                cin.ignore();
+                cin.get();
+                system("cls");
                 break;
             case '5':
                 // View Reservation
@@ -145,6 +186,13 @@ int main() {
             switch (choice) {
             case '1':
                 // View transaction
+                system("cls");
+                cout << "Viewing all library transactions..." << endl;
+                viewAllTransactions();
+                cout << "\nPress any key to continue...";
+                cin.ignore();
+                cin.get();
+                system("cls");
                 break;
             case '2':
                 // View reserve
