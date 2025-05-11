@@ -32,7 +32,8 @@ CREATE TABLE `book` (
   `Category` enum('fiction','non-fiction','academic','other') NOT NULL,
   `Status` enum('available','borrowed','reserved') NOT NULL DEFAULT 'available',
   PRIMARY KEY (`BookID`,`CopyID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) 
+ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -149,5 +150,7 @@ UNLOCK TABLES;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+ALTER TABLE book
+MODIFY COLUMN `Status` ENUM('available', 'borrowed', 'reserved', 'removed') NOT NULL DEFAULT 'available';
 
 -- Dump completed on 2025-05-07 12:04:22
