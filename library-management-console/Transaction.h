@@ -1,6 +1,49 @@
 // Get Transaction table globally
 mysqlx::Table transactionTable = db.getTable("transaction");
 
+// THis is the default fine rate
+double FINE_RATE = 0.5;
+void changeFineRate() {
+    cout << "Current fine rate is $" << FINE_RATE << " per day." << endl;
+    cout << "Enter new fine rate: ";
+    cin >> FINE_RATE;
+
+    if (FINE_RATE < 0) {
+        cout << "Invalid fine rate. Reverting to default ($0.5)." << endl;
+        FINE_RATE = 0.5;
+    }
+    else {
+        cout << "Fine rate updated to $" << FINE_RATE << " per day." << endl;
+    }
+}
+inline void MostPopularBooks() {
+    cout << "\n--- Most Popular Books ---\n";
+
+    try {
+
+        auto result = sess.sql(R"(
+            SELECT b.BookID, b.Title, COUNT(t.TransactionID) AS BorrowCount
+            FROM Transaction t
+            JOIN Book b ON t.BookID = b.BookID
+            GROUP BY b.BookID, b.Title
+            ORDER BY BorrowCount DESC
+        )").execute();
+
+        int rank = 1;
+        mysqlx::Row row;
+        while ((row = result.fetchOne())) {
+            int bookID = row[0].get<int>();
+            string title = row[1].get<string>();
+            int borrowCount = row[2].get<int>();
+
+            cout << rank++ << ". " << title << " (ID: " << bookID << ") - Borrowed " << borrowCount << " times\n";
+        }
+    }
+    catch (const mysqlx::Error& err) {
+        cerr << "SQL Error while listing popular books: " << err.what() << endl;
+    }
+}
+
 // Helps change mysql date to string
 #include <string>
 #include <sstream>
@@ -221,7 +264,7 @@ bool returnBook(int userID, int transactionID) {
     }
     // returns diff in seconds so needs to be converted to days
     int daysLate = difftime(return_time, due_time) / (60 * 60 * 24);
-    double fine = (daysLate > 0) ? daysLate * 0.5 : 0.0;
+    double fine = (daysLate > 0) ? daysLate * FINE_RATE : 0.0;
 
     // 4. Complete the transaction
     try {
@@ -259,9 +302,15 @@ bool returnBook(int userID, int transactionID) {
 
 // View all transactions (for librarian)
 inline void viewAllTransactions() {
-    auto rr = transactionTable.select("*")
-        .orderBy("TransactionID DESC").execute();
-
+    auto rr = transactionTable.select(
+        "TransactionID", "UserID", "BookID", "CopyID",
+        "CAST(BorrowDate AS CHAR)",
+        "CAST(DueDate AS CHAR)",
+        "CAST(ReturnDate AS CHAR)",
+        "Fine"
+    )
+        .orderBy("TransactionID DESC")
+        .execute();
 
     bool found = false;
     decltype(rr.fetchOne()) row;
@@ -270,11 +319,20 @@ inline void viewAllTransactions() {
             cout << "\n--- All Library Transactions ---\n";
             found = true;
         }
+
+        string borrowDate = row[4].isNull() ? "N/a" : row[4].get<string>();
+        string dueDate = row[5].isNull() ? "N/A" : row[5].get<string>();
+        string returnDate = row[6].isNull() ? "Not Returned" : row[6].get<string>();
+
         printTransactionDetails(
-            row[0].get<int>(), row[1].get<int>(), row[2].get<int>(), row[3].get<int>(),
-            row[4].get<string>(), row[5].get<string>(),
-            row[6].isNull() ? string() : row[6].get<string>(),
-            row[7].get<double>()
+            row[0].get<int>(),  // TransactionID
+            row[1].get<int>(),  // UserID
+            row[2].get<int>(),  // BookID
+            row[3].get<int>(),  // CopyID
+            borrowDate,
+            dueDate,
+            returnDate,
+            row[7].get<double>() // Fine
         );
     }
 
@@ -282,3 +340,4 @@ inline void viewAllTransactions() {
         cout << "No transactions found in the system." << endl;
     }
 }
+

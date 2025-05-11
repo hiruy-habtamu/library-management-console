@@ -28,8 +28,9 @@ void displayLibrarianMenu() {
     cout << "2. View Reserved Books" << endl;
     cout << "3. Add Book " << endl;
     cout << "4. Remove Book " << endl;
-    cout << "5. Logout **WORKS** " << endl;
-    cout << "6. Deactivate Librarian Account **WORKS** " << endl;
+    cout << "5. Logout " << endl;
+    cout << "6. Deactivate Librarian Account" << endl;
+	cout << "7. Change Fine rate" << endl;
     cout << "*********************************************************************" << endl;
     cout << "Please choose an option: ";
 }
@@ -45,8 +46,9 @@ void displayUserMenu() {
     cout << "3. View Available Books" << endl;
     cout << "4. View My Transactions" << endl;
     cout << "5. View My Reservations" << endl;
-    cout << "6. Logout **WORKS**" << endl;
-    cout << "7. Deactivate User account **WORKS** " << endl;
+    cout << "6. Logout " << endl;
+    cout << "7. Deactivate User account " << endl;
+	cout << "8. Most Popular Books" << endl;
     cout << "*********************************************************************" << endl;
     cout << "Please choose an option: ";
 }
@@ -62,9 +64,9 @@ int main() {
         if (currentUser.is_empty()||currentUser.status == "Inactive") {
 
             cout << "*************** MAIN MENU **************************" << endl;
-            cout << "1. Sign Up **WORKS** " << endl;
-            cout << "2. Login **WORKS** " << endl;
-            cout << "3. Exit **WORKS** " << endl;
+            cout << "1. Sign Up " << endl;
+            cout << "2. Login " << endl;
+            cout << "3. Exit " << endl;
             cout << "\nEnter choice:";
             cin >> choice;
             switch (choice) {
@@ -179,6 +181,16 @@ int main() {
                 currentUser.status = "Inactive";
                 system("cls");
                 break;
+            case '8':
+				// View most popular books
+				system("cls");
+				cout << "Viewing most popular books..." << endl;
+				MostPopularBooks();
+				cout << "\nPress any key to continue...";
+				cin.ignore();
+				cin.get();
+				system("cls");
+				break;
             default:
                 cout << "Invalid Input " << endl;
                 break;
@@ -237,6 +249,9 @@ int main() {
                 // Deactivate in Struct
                 currentUser.status = "Inactive";
                 system("cls");
+                break;
+            case '7':
+                changeFineRate();
                 break;
             default:
                 cout << "Invalid Input " << endl;
