@@ -15,9 +15,6 @@ struct Book {
 mysqlx::Table bookTable = db.getTable("book");
 
 void addBook() {
-   
-
-
     string title, author, isbn, category;
     char choice;
     int year;
@@ -64,16 +61,16 @@ void addBook() {
         }
     }
     else {
-        cout << "Book not found in the system.\nEnter book details:" << endl;
+        cout << "Book not found in the system.\n \tPlease Enter book Details." << endl;
 
         cout << "Enter Book Title: "<<endl;
-        cin >> title;
+        getline(cin >> ws, title);
         cout << "Enter Author: "<<endl;
-        cin >> author;
-        cout << "Enter Publication Year: "<<endl;
+        getline(cin >> ws, author);
+        cout << "Enter Publication Year (YYYY): "<<endl;
         cin >> year;
         cout << "Enter Category (fiction/non-fiction/academic/other): "<<endl;
-        cin >> category;
+        getline(cin >> ws, category);
 
         rr = bookTable.select("MAX(BookID)").execute();
 
@@ -132,6 +129,31 @@ void removeBook() {
 
 
 }
+
+void viewAllBooks() {
+    mysqlx::RowResult rr = bookTable
+        .select("BookID", "CopyID", "Title", "Author", "ISBN", "PublicationYear", "Category", "Status")
+        .where("Status != 'removed'")
+        .execute();
+
+    if (rr.count() == 0) {
+        cout << "\nNo books found (excluding removed).\n" << endl;
+        return;
+    }
+
+    cout << "\n------------------------ All Books ------------------------\n";
+    for (mysqlx::Row row : rr) {
+        cout << "BookID: " << row[0].get<int>() << ", CopyID: " << row[1].get<int>() << endl;
+        cout << "Title: " << row[2].get<string>() << endl;
+        cout << "Author: " << row[3].get<string>() << endl;
+        cout << "ISBN: " << row[4].get<string>() << endl;
+        cout << "Year: " << row[5].get<int>() << endl;
+        cout << "Category: " << row[6].get<string>() << endl;
+        cout << "Status: " << row[7].get<string>() << endl;
+        cout << "------------------------------------------------------------\n";
+    }
+}
+
 
 
 

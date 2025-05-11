@@ -21,14 +21,16 @@ User currentUser;
 
 // LIBRARIAN ONLY MENUU//
 void displayLibrarianMenu() {
+    currentUser.displayUserDetails();
     cout << "******************** Library Management System **********************" << endl;
     cout << "_____________________________ LIBRARIAN MENU ________________________" << endl;
     cout << "1. View Transactions" << endl;
     cout << "2. View Reserved Books" << endl;
     cout << "3. Add Book " << endl;
     cout << "4. Remove Book " << endl;
-    cout << "5. Logout **WORKS** " << endl;
-    cout << "6. Deactivate Librarian Account **WORKS** " << endl;
+    cout << "5. Logout " << endl;
+    cout << "6. Deactivate Librarian Account" << endl;
+	cout << "7. Change Fine rate" << endl;
     cout << "*********************************************************************" << endl;
     cout << "Please choose an option: ";
 }
@@ -36,6 +38,7 @@ void displayLibrarianMenu() {
 
 
 void displayUserMenu() {
+    currentUser.displayUserDetails();
     cout << "************************Library Management System *******************" << endl;
     cout << "_____________________________USER MENU_______________________________" << endl;
     cout << "1. Borrow Book" << endl; // Should Automatically ask to reserve book if there is no copy that exists.
@@ -43,8 +46,9 @@ void displayUserMenu() {
     cout << "3. View Available Books" << endl;
     cout << "4. View My Transactions" << endl;
     cout << "5. View My Reservations" << endl;
-    cout << "6. Logout **WORKS**" << endl;
-    cout << "7. Deactivate User account **WORKS** " << endl;
+    cout << "6. Logout " << endl;
+    cout << "7. Deactivate User account " << endl;
+	cout << "8. Most Popular Books" << endl;
     cout << "*********************************************************************" << endl;
     cout << "Please choose an option: ";
 }
@@ -60,9 +64,9 @@ int main() {
         if (currentUser.is_empty()||currentUser.status == "Inactive") {
 
             cout << "*************** MAIN MENU **************************" << endl;
-            cout << "1. Sign Up **WORKS** " << endl;
-            cout << "2. Login **WORKS** " << endl;
-            cout << "3. Exit **WORKS** " << endl;
+            cout << "1. Sign Up " << endl;
+            cout << "2. Login " << endl;
+            cout << "3. Exit " << endl;
             cout << "\nEnter choice:";
             cin >> choice;
             switch (choice) {
@@ -83,22 +87,66 @@ int main() {
             }
         }
         else if (currentUser.role == "Student" || currentUser.role == "Faculty") {
-
             system("cls");
             displayUserMenu();
             cin >> choice;
             switch (choice) {
-            case '1':
+            case '1': {
                 // BorrowBook stuff
+                system("cls");
+                int bookIDToBorrow;
+                cout << "--- Borrow Book ---" << endl;
+                cout << "Enter the Book ID you want to borrow: ";
+                cin >> bookIDToBorrow;
+
+                if (borrowBook(currentUser.userID, bookIDToBorrow)) {
+                    cout << "\nBorrow operation completed." << endl;
+                }
+                else {
+                    cout << "\nBorrow operation failed." << endl;
+                }
+
+                cout << "\nPress Enter to continue...";
+                cin.ignore();
+                cin.get();
                 break;
-            case '2':
+             }
+            case '2': {
                 // Return Book stuff
+                system("cls");
+                int transactionIDToReturn;
+                cout << "--- Return Book ---" << endl;
+                cout << "Enter the Transaction ID to return: ";
+                cin >> transactionIDToReturn;
+
+                if (returnBook(currentUser.userID, transactionIDToReturn)) {
+                    cout << "\nReturn operation completed." << endl;
+                }
+                else {
+                    cout << "\nReturn operation failed." << endl;
+                }
+
+                cout << "\nPress Enter to continue...";
+                cin.ignore();
+                cin.get();
+            }
                 break;
             case '3':
-                // Show available book
+                // Show all book
+                viewAllBooks();
+                cout << "\nPress Enter to continue...";
+                cin.ignore();
+                cin.get();
                 break;
             case '4':
                 //View Transaction
+                system("cls");
+                cout << "Viewing your transaction history..." << endl;
+                viewUserTransactions(currentUser.userID);
+                cout << "\nPress any key to continue...";
+                cin.ignore();
+                cin.get();
+                system("cls");
                 break;
             case '5':
                 // View Reservation
@@ -133,6 +181,16 @@ int main() {
                 currentUser.status = "Inactive";
                 system("cls");
                 break;
+            case '8':
+				// View most popular books
+				system("cls");
+				cout << "Viewing most popular books..." << endl;
+				MostPopularBooks();
+				cout << "\nPress any key to continue...";
+				cin.ignore();
+				cin.get();
+				system("cls");
+				break;
             default:
                 cout << "Invalid Input " << endl;
                 break;
@@ -145,6 +203,13 @@ int main() {
             switch (choice) {
             case '1':
                 // View transaction
+                system("cls");
+                cout << "Viewing all library transactions..." << endl;
+                viewAllTransactions();
+                cout << "\nPress any key to continue...";
+                cin.ignore();
+                cin.get();
+                system("cls");
                 break;
             case '2':
                 // View reserve
@@ -184,6 +249,9 @@ int main() {
                 // Deactivate in Struct
                 currentUser.status = "Inactive";
                 system("cls");
+                break;
+            case '7':
+                changeFineRate();
                 break;
             default:
                 cout << "Invalid Input " << endl;

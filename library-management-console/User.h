@@ -208,7 +208,7 @@ User login() {
             string query_password = row[0].get<string>();
 
             if (query_password == password) {
-                rr = userTable.select("*").where("Password = :pass").bind("pass", password).execute();
+                rr = userTable.select("*").where("Email = :email").bind("email", email).execute();
                 row = rr.fetchOne();
                 
                 user.userID=row[0].get<int>();
