@@ -130,7 +130,11 @@ int main() {
             }
                 break;
             case '3':
-                // Show available book
+                // Show all book
+                viewAllBooks();
+                cout << "\nPress Enter to continue...";
+                cin.ignore();
+                cin.get();
                 break;
             case '4':
                 //View Transaction
