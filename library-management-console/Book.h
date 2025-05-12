@@ -37,7 +37,7 @@ void addBook() {
             rr = bookTable.select("MAX(CopyID)").where("BookID = :id").bind("id", book_id).execute();
             row = rr.fetchOne();
 
-            int new_copy_id = (row && !row[0].isNull()) ? row[0].get<int>() + 1 : 2;
+            int new_copy_id = row[0].get<int>() + 1;
 
 
             //here using other data(meta data) of the copy to be added ,from the book that already exist
