@@ -12,9 +12,10 @@ mysqlx::Schema db = sess.getSchema("library_db");
 #include "User.h"        
 // Default password for all dummy users is abcd@1234
 
-#include "Book.h"        
-#include "Transaction.h"
+#include "Book.h"     
 #include "Reservation.h" 
+#include "Transaction.h"
+
 
 // Initiate current user
 User currentUser;
@@ -31,6 +32,7 @@ void displayLibrarianMenu() {
     cout << "5. Logout " << endl;
     cout << "6. Deactivate Librarian Account" << endl;
 	cout << "7. Change Fine rate" << endl;
+	cout << "8. View All Books" << endl;
     cout << "*********************************************************************" << endl;
     cout << "Please choose an option: ";
 }
@@ -43,12 +45,13 @@ void displayUserMenu() {
     cout << "_____________________________USER MENU_______________________________" << endl;
     cout << "1. Borrow Book" << endl; // Should Automatically ask to reserve book if there is no copy that exists.
     cout << "2. Return Book" << endl;
-    cout << "3. View Available Books" << endl;
+    cout << "3. View All Books" << endl;
     cout << "4. View My Transactions" << endl;
     cout << "5. View My Reservations" << endl;
     cout << "6. Logout " << endl;
     cout << "7. Deactivate User account " << endl;
 	cout << "8. Most Popular Books" << endl;
+    cout << "9. Remove reservations" << endl;
     cout << "*********************************************************************" << endl;
     cout << "Please choose an option: ";
 }
@@ -150,6 +153,11 @@ int main() {
                 break;
             case '5':
                 // View Reservation
+				viewUserReservations(currentUser.userID);
+                cout << "\nPress any key to continue...";
+                cin.ignore();
+                cin.get();
+                system("cls");
                 break;
             case '6':
                 //logout
@@ -189,8 +197,16 @@ int main() {
 				cout << "\nPress any key to continue...";
 				cin.ignore();
 				cin.get();
-				system("cls");
 				break;
+            case '9':
+                int reservationID;
+                std::cout << "Please enter the Reservation ID you want to remove: ";
+                std::cin >> reservationID;
+                removeReservation(reservationID, currentUser.userID);
+                cout << "\nPress any key to continue...";
+                cin.ignore();
+                cin.get();
+                break;
             default:
                 cout << "Invalid Input " << endl;
                 break;
@@ -212,7 +228,12 @@ int main() {
                 system("cls");
                 break;
             case '2':
-                // View reserve
+                // View all reserved books
+				system("cls");
+                viewReservedBooks();
+                cout << "\nPress any key to continue...";
+                cin.ignore();
+                cin.get();
                 break;
             case '3':
                 system("cls");
@@ -253,6 +274,15 @@ int main() {
             case '7':
                 changeFineRate();
                 break;
+            case '8':
+				// View all books
+				system("cls");
+				cout << "...Viewing all books..." << endl;
+				viewAllBooks();
+				cout << "\nPress any key to continue...";
+				cin.ignore();
+				cin.get();
+				break;
             default:
                 cout << "Invalid Input " << endl;
                 break;
