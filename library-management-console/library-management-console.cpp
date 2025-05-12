@@ -251,9 +251,11 @@ int main() {
                 break;
             case '6':
                 cout << "Enter password: " << endl;
-                cin >> password;
+                cin >> plain_password;
+                // Hash the plain password into a hashed password
+                password = picosha2::hash256_hex_string(plain_password);
                 if (password == currentUser.password) {
-                 
+
                     cout << "Are you sure you want to deactivate your account? Y/N " << endl;
                     cin >> deactivate_choice;
                     if (deactivate_choice == 'N' || deactivate_choice == 'n') {
@@ -262,8 +264,8 @@ int main() {
                     }
                 }
                 else {
-                    system("cls");
                     cout << "Incorrect Password " << endl;
+                    system("cls");
                     break;
                 }
                 // Deactivate User in database
