@@ -3,6 +3,8 @@ mysqlx::Table transactionTable = db.getTable("transaction");
 
 // THis is the default fine rate
 double FINE_RATE = 0.5;
+
+
 void changeFineRate() {
     cout << "Current fine rate is $" << FINE_RATE << " per day." << endl;
     cout << "Enter new fine rate: ";
@@ -52,6 +54,7 @@ inline void MostPopularBooks() {
 #include <chrono>
 using namespace chrono;
 
+// used to convert the chrono time to 'YYYY-MM-DD' format
 string formatDateToString(const system_clock::time_point& tp) {
     time_t tt = system_clock::to_time_t(tp);
     struct tm localTime;
@@ -99,7 +102,7 @@ inline bool createTransaction(
     string borrowDateSQL = formatDateToString(now);
 
     // Calculate the due date (15 days later)
-    auto dueDate = now + hours(24 * 15); // 15 days = 360 hours
+    auto dueDate = now + hours(24 * 15); 
     string dueDateSQL = formatDateToString(dueDate);
 
     // Determine new transaction ID
@@ -142,6 +145,19 @@ bool borrowBook(int userID, int bookID) {
 
     if (!rowAvailableCopy) {
         std::cout << "Sorry, book with ID " << bookID << " is currently not available." << std::endl;
+        char userInput;
+        std::cout << "Would you like to reserve it? (y/n): ";
+        std::cin >> userInput;
+
+        if (userInput == 'y' || userInput == 'Y') {
+
+            reserveBook(userID, bookID);
+        }
+        else {
+            // User doesn't want to reserve
+            std::cout << "You chose not to reserve the book." << std::endl;
+            return false;
+        }
         return false;
     }
 
