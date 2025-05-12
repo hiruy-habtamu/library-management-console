@@ -15,7 +15,7 @@ mysqlx::Schema db = sess.getSchema("library_db");
 #include "Book.h"     
 #include "Reservation.h" 
 #include "Transaction.h"
-
+#include "Report.h"
 
 // Initiate current user
 User currentUser;
@@ -33,6 +33,7 @@ void displayLibrarianMenu() {
     cout << "6. Deactivate Librarian Account" << endl;
 	cout << "7. Change Fine rate" << endl;
 	cout << "8. View All Books" << endl;
+	cout << "9. Export Reports to CSV" << endl;
     cout << "*********************************************************************" << endl;
     cout << "Please choose an option: ";
 }
@@ -279,6 +280,20 @@ int main() {
 				system("cls");
 				cout << "...Viewing all books..." << endl;
 				viewAllBooks();
+				cout << "\nPress any key to continue...";
+				cin.ignore();
+				cin.get();
+				break;
+            case '9':
+				// Export reports to CSV
+				system("cls");
+				cout << "Exporting reports..." << endl;
+                exportBorrowedBooks();
+                exportOverdueBooks();
+                exportMonthlyBorrowing();
+                exportPopularBooks();
+                exportFinesSummary();
+				cout << "\nReports exported successfully." << endl;
 				cout << "\nPress any key to continue...";
 				cin.ignore();
 				cin.get();

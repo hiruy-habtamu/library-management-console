@@ -138,6 +138,7 @@
   <ItemGroup>
     <ClInclude Include="Book.h" />
     <ClInclude Include="picosha2.h" />
+    <ClInclude Include="Report.h" />
     <ClInclude Include="Reservation.h" />
     <ClInclude Include="Transaction.h" />
     <ClInclude Include="User.h" />
