@@ -138,7 +138,7 @@ inline bool createTransaction(
 bool borrowBook(int userID, int bookID) {
     // 1. Check if the book exists and is available (status is 'Available')
     mysqlx::RowResult rrAvailableCopy = bookTable.select("CopyID")
-        .where("BookID = :bid AND Status = 'Available'")
+        .where("BookID = :bid AND Status = 'available'")
         .bind("bid", bookID)
         .execute();
     mysqlx::Row rowAvailableCopy = rrAvailableCopy.fetchOne();
