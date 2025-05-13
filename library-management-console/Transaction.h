@@ -295,7 +295,7 @@ bool returnBook(int userID, int transactionID) {
 
         // 5. Update book copy status
         bookTable.update()
-            .set("Status", "Available")
+            .set("Status", "available")
             .where("BookID = :bid AND CopyID = :cid")
             .bind("bid", bookID)
             .bind("cid", copyID)

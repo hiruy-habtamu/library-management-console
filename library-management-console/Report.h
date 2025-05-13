@@ -44,7 +44,7 @@ void exportOverdueBooks() {
         auto result = transactionTable
             .select("BookID", "UserID", "CopyID",
                 "CAST(BorrowDate AS CHAR)", "CAST(DueDate AS CHAR)")
-            .where("DueDate > CURDATE()")
+            .where("DueDate < CURDATE()")
             .execute();
 
         for (auto row : result) {
